@@ -58,6 +58,7 @@ public class SendSMS extends Script {
          log.error("error updating twilio record :{}", ex.getMessage());
       }
         JSONObject json = new JSONObject(response);
+      
         result = json.getString("status");
         record.setTo(to);
         record.setMessage(message);
