@@ -69,7 +69,7 @@ public class SendSMS extends Script {
      
       log.info("Value : {}", value);
       
-        result = json.getString("status");
+        result = json.getString("message");
         record.setTo(to);
         record.setMessage(message);
         record.setResponse(result);
