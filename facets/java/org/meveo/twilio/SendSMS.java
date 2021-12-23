@@ -64,10 +64,11 @@ public class SendSMS extends Script {
        JSONObject json = new JSONObject(value);
       
       if(json.getInt("status") !=201){
-         throw new BusinessException(""+ json.getString("message") );
+        result=json.getString("message") ;
       }
      
-      log.info("Value : {}", value);
+      if(json.getInt("status") ==201){
+         log.info("Value : {}", value);
       
         result = json.getString("message");
         record.setTo(to);
@@ -78,6 +79,8 @@ public class SendSMS extends Script {
         } catch (Exception ex) {
             log.error("error updating twilio record :{}", ex.getMessage());
         }
+      }
+     
         super.execute(parameters);
     }
   
