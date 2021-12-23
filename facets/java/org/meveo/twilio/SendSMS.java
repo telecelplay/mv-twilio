@@ -75,4 +75,8 @@ public class SendSMS extends Script {
         }
         super.execute(parameters);
     }
+  
+     public void setTo(String to) {
+       this.to=to;
+    }
 }
