@@ -51,40 +51,34 @@ public class SendSMS extends Script {
         WebTarget target = client.target(url);
         OutboundSMS record = new OutboundSMS();
         Response response = null;
-      try{
-        response = target.request().post(Entity.form(map), Response.class);
-       log.info("Response : {}", response);
-      }catch(Exception ex){
-        log.error("error while hitting  twilio url :{}", ex.getMessage());
-        throw new BusinessException("Something went wrong.Please try after sometime");
-         
-        
-      }
-            String value = response.readEntity(String.class);
-       JSONObject json = new JSONObject(value);
-      
-      if(json.getInt("status") !=201){
-        result=json.getString("message") ;
-      }
-     
-      if(json.getInt("status") ==201){
-         log.info("Value : {}", value);
-      
-        result = json.getString("message");
-        record.setTo(to);
-        record.setMessage(message);
-        record.setResponse(result);
         try {
-            crossStorageApi.createOrUpdate(defaultRepo, record);
+            response = target.request().post(Entity.form(map), Response.class);
+            log.info("Response : {}", response);
         } catch (Exception ex) {
-            log.error("error updating twilio record :{}", ex.getMessage());
+            log.error("error while hitting  twilio url :{}", ex.getMessage());
+            throw new BusinessException("Something went wrong.Please try after sometime");
         }
-      }
-     
+        String value = response.readEntity(String.class);
+        JSONObject json = new JSONObject(value);
+        if (json.getInt("status") != 201) {
+            result = json.getString("message");
+        }
+        if (json.getInt("status") == 201) {
+            log.info("Value : {}", value);
+            result = json.getString("message");
+            record.setTo(to);
+            record.setMessage(message);
+            record.setResponse(result);
+            try {
+                crossStorageApi.createOrUpdate(defaultRepo, record);
+            } catch (Exception ex) {
+                log.error("error updating twilio record :{}", ex.getMessage());
+            }
+        }
         super.execute(parameters);
     }
-  
-     public void setTo(String to) {
-       this.to=to;
+
+    public void setTo(String to) {
+        this.to = to;
     }
 }
