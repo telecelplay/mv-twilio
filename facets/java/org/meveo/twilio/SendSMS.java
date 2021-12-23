@@ -23,14 +23,6 @@ public class SendSMS extends Script {
 
     private String result;
 
-    public void setFrom(String to) {
-        this.to = to;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
     public String getResult() {
         return result;
     }
