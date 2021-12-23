@@ -19,6 +19,14 @@ public class OutboundSMS implements CustomEntity {
     @JsonIgnore()
     private DBStorageType storages;
 
+    private String response;
+
+    private String from;
+
+    private String to;
+
+    private String message;
+
     @Override()
     public String getUuid() {
         return uuid;
@@ -34,6 +42,38 @@ public class OutboundSMS implements CustomEntity {
 
     public void setStorages(DBStorageType storages) {
         this.storages = storages;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override()
