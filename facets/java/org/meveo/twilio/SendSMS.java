@@ -48,7 +48,10 @@ public class SendSMS extends Script {
         WebTarget target = client.target(url);
         OutboundSMS record = new OutboundSMS();
         String response = null;
-        response = target.request().post(Entity.form(map), String.class);
+        response = target.request()
+          .property("Username", TWILIO_SID)
+          .property("Password", TWILIO_API_KEY)
+          .post(Entity.form(map), String.class);
         JSONObject json = new JSONObject(response);
         result = json.getString("status");
         record.setTo(to);
