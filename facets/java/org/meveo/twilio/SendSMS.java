@@ -51,7 +51,12 @@ public class SendSMS extends Script {
         WebTarget target = client.target(url);
         OutboundSMS record = new OutboundSMS();
         String response = null;
+      try{
         response = target.request().post(Entity.form(map), String.class);
+      }catch(Exception ex){
+        
+         log.error("error updating twilio record :{}", ex.getMessage());
+      }
         JSONObject json = new JSONObject(response);
         result = json.getString("status");
         record.setTo(to);
