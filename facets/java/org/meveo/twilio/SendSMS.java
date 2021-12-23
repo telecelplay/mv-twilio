@@ -60,9 +60,14 @@ public class SendSMS extends Script {
          
         
       }
-      String value = response.readEntity(String.class);
+            String value = response.readEntity(String.class);
+       JSONObject json = new JSONObject(value);
+      
+      if(json.getInt("status") !=201){
+         throw new BusinessException("Message :{}"+ json.getString("message") );
+      }
+     
       log.info("Value : {}", value);
-        JSONObject json = new JSONObject(value);
       
         result = json.getString("status");
         record.setTo(to);
