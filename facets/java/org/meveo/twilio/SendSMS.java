@@ -61,7 +61,7 @@ public class SendSMS extends Script {
         
       }
       String value = response.readEntity(String.class);
-      log.info("Response : {}", value);
+      log.info("Value : {}", value);
         JSONObject json = new JSONObject(value);
       
         result = json.getString("status");
