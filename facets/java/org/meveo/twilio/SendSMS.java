@@ -50,8 +50,8 @@ public class SendSMS extends Script {
         OutboundSMS record = new OutboundSMS();
         String response = null;
         response = target.request()
-         .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, TWILIO_SID)
-          .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, TWILIO_API_KEY)
+         .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, "AC76212344a90c381e1167b4a1d190af36")
+          .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, "52a357f6d47ecd115a493ab15e5ab778")
           .post(Entity.form(map), String.class);
         JSONObject json = new JSONObject(response);
         result = json.getString("status");
