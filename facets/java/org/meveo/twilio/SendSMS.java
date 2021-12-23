@@ -16,6 +16,7 @@ import org.meveo.service.storage.RepositoryService;
 import org.meveo.model.storage.Repository;
 import org.meveo.api.persistence.CrossStorageApi;
 import org.meveo.model.persistence.CEIUtils;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 public class SendSMS extends Script {
 
@@ -49,8 +50,8 @@ public class SendSMS extends Script {
         OutboundSMS record = new OutboundSMS();
         String response = null;
         response = target.request()
-          .property("Username", TWILIO_SID)
-          .property("Password", TWILIO_API_KEY)
+         .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, TWILIO_SID)
+          .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, TWILIO_API_KEY)
           .post(Entity.form(map), String.class);
         JSONObject json = new JSONObject(response);
         result = json.getString("status");
