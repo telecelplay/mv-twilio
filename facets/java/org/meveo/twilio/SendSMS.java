@@ -50,7 +50,7 @@ public class SendSMS extends Script {
         map.put("From", "+17604927786");
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(url);
-        OutboundSMS record = CEIUtils.ceiToPojo((org.meveo.model.customEntities.CustomEntityInstance) parameters.get("CONTEXT_ENTITY"), OutboundSMS.class);
+        OutboundSMS record = new OutboundSMS();
         String response = null;
         response = target.request().accept(MediaType.APPLICATION_FORM_URLENCODED).post(Entity.entity(map, MediaType.APPLICATION_FORM_URLENCODED), String.class);
         JSONObject json = new JSONObject(response);
