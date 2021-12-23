@@ -1,0 +1,1 @@
+{"code":"OutboundSMS","name":"Outbound SMS","description":"SMS sent from meveo","availableStorages":["SQL"],"sqlStorageConfiguration":{"storeAsTable":true},"samples":[],"audited":false,"fields":[],"actions":[]}
