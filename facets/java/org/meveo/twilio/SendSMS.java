@@ -43,16 +43,18 @@ public class SendSMS extends Script {
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
         String message = Integer.toString(number);
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("To", to);
-        map.put("MessagingServiceSid", "MG2b8962bf2b0f196d3ba43919fcf98bac");
-        map.put("Body", message);
-        map.put("From", "+17604927786");
+      
+      
+      Form map = new Form()
+        .param("To", to)
+        .param("MessagingServiceSid", "MG2b8962bf2b0f196d3ba43919fcf98bac")
+        .param("Body",message)
+        .param("From", "+17604927786");
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(url);
         OutboundSMS record = new OutboundSMS();
         String response = null;
-        response = target.request().post(Entity.entity(map, MediaType.APPLICATION_FORM_URLENCODED), String.class);
+        response = target.request().post(Entity.form(map), String.class);
         JSONObject json = new JSONObject(response);
         result = json.getString("status");
         record.setTo(to);
