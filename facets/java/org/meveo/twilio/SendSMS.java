@@ -43,13 +43,7 @@ public class SendSMS extends Script {
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
         String message = Integer.toString(number);
-      
-      
-      Form map = new Form()
-        .param("To", to)
-        .param("MessagingServiceSid", "MG2b8962bf2b0f196d3ba43919fcf98bac")
-        .param("Body",message)
-        .param("From", "+17604927786");
+        Form map = new Form().param("To", to).param("MessagingServiceSid", "MG2b8962bf2b0f196d3ba43919fcf98bac").param("Body", message).param("From", "+17604927786");
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(url);
         OutboundSMS record = new OutboundSMS();
