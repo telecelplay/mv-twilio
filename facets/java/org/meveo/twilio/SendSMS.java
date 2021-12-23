@@ -43,7 +43,7 @@ public class SendSMS extends Script {
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
         String message = Integer.toString(number);
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, String> map = new HashMap<String, String>();
         map.put("To", to);
         map.put("MessagingServiceSid", "MG2b8962bf2b0f196d3ba43919fcf98bac");
         map.put("Body", message);
