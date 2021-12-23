@@ -52,7 +52,7 @@ public class SendSMS extends Script {
         WebTarget target = client.target(url);
         OutboundSMS record = new OutboundSMS();
         String response = null;
-        response = target.request().accept(MediaType.APPLICATION_FORM_URLENCODED).post(Entity.entity(map, MediaType.APPLICATION_FORM_URLENCODED), String.class);
+        response = target.request().post(Entity.entity(map, MediaType.APPLICATION_FORM_URLENCODED), String.class);
         JSONObject json = new JSONObject(response);
         result = json.getString("status");
         record.setTo(to);
