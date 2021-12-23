@@ -53,7 +53,7 @@ public class SendSMS extends Script {
         Response response = null;
       try{
         response = target.request().post(Entity.form(map), Response.class);
-       log.info("Response by sid : {}", response);
+       log.info("Response : {}", response);
       }catch(Exception ex){
         log.error("error while hitting  twilio url :{}", ex.getMessage());
         throw new BusinessException("Something went wrong.Please try after sometime");
@@ -61,7 +61,7 @@ public class SendSMS extends Script {
         
       }
       String value = response.readEntity(String.class);
-      log.info("Response : {}", response);
+      log.info("Response : {}", value);
         JSONObject json = new JSONObject(value);
       
         result = json.getString("status");
