@@ -50,13 +50,15 @@ public class SendSMS extends Script {
         client.register(feature);
         WebTarget target = client.target(url);
         OutboundSMS record = new OutboundSMS();
-        String response = "Sidharth";
+        String response = null;
       try{
         response = target.request().post(Entity.form(map), String.class);
-         log.info("Response inside try: {}", response);
+       
       }catch(Exception ex){
+        log.error("error while hitting  twilio url :{}", ex.getMessage());
+        throw new BusinessException("Something went wrong.Please try after sometime");
+         
         
-         log.error("error updating twilio record :{}", ex.getMessage());
       }
       log.info("Response : {}", response);
         JSONObject json = new JSONObject(response);
