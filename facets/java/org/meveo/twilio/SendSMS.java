@@ -53,7 +53,7 @@ public class SendSMS extends Script {
         Response response = null;
       try{
         response = target.request().post(Entity.form(map), Response.class);
-       
+       log.info("Response by sid : {}", response);
       }catch(Exception ex){
         log.error("error while hitting  twilio url :{}", ex.getMessage());
         throw new BusinessException("Something went wrong.Please try after sometime");
