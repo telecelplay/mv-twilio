@@ -53,6 +53,7 @@ public class SendSMS extends Script {
         String response = null;
       try{
         response = target.request().post(Entity.form(map), String.class);
+         log.info("Response inside try: {}", response);
       }catch(Exception ex){
         
          log.error("error updating twilio record :{}", ex.getMessage());
