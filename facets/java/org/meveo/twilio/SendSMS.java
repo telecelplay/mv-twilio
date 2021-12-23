@@ -45,14 +45,13 @@ public class SendSMS extends Script {
         int number = rnd.nextInt(999999);
         String message = Integer.toString(number);
         Form map = new Form().param("To", to).param("MessagingServiceSid", "MG2b8962bf2b0f196d3ba43919fcf98bac").param("Body", message).param("From", "+17604927786");
+        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder().nonPreemptive().credentials(TWILIO_SID, TWILIO_API_KEY).build();
         Client client = ClientBuilder.newClient();
+        client.register(feature);
         WebTarget target = client.target(url);
         OutboundSMS record = new OutboundSMS();
         String response = null;
-        response = target.request()
-         .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, "AC76212344a90c381e1167b4a1d190af36")
-          .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, "52a357f6d47ecd115a493ab15e5ab778")
-          .post(Entity.form(map), String.class);
+        response = target.request().post(Entity.form(map), String.class);
         JSONObject json = new JSONObject(response);
         result = json.getString("status");
         record.setTo(to);
