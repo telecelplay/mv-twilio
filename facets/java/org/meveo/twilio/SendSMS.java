@@ -40,7 +40,7 @@ public class SendSMS extends Script {
     public void execute(Map<String, Object> parameters) throws BusinessException {
         String TWILIO_SID = "AC76212344a90c381e1167b4a1d190af36";
         String TWILIO_API_KEY = "52a357f6d47ecd115a493ab15e5ab778";
-        String url = "https://api.twilio.com/2010-04-01/Accounts/" + "AC76212344a90c381e1167b4a1d190af36" + "/Messages.json";
+        String url = "https://api.twilio.com/2010-04-01/Accounts/AC76212344a90c381e1167b4a1d190af36/Messages.json";
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
         String message = Integer.toString(number);
@@ -50,7 +50,7 @@ public class SendSMS extends Script {
         client.register(feature);
         WebTarget target = client.target(url);
         OutboundSMS record = new OutboundSMS();
-        String response = null;
+        String response = "Sidharth";
       try{
         response = target.request().post(Entity.form(map), String.class);
          log.info("Response inside try: {}", response);
