@@ -64,7 +64,7 @@ public class SendSMS extends Script {
        JSONObject json = new JSONObject(value);
       
       if(json.getInt("status") !=201){
-         throw new BusinessException("Message : {}"+ json.getString("message") );
+         throw new BusinessException(""+ json.getString("message") );
       }
      
       log.info("Value : {}", value);
