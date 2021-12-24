@@ -60,10 +60,10 @@ public class SendSMS extends Script {
         }
         String value = response.readEntity(String.class);
         JSONObject json = new JSONObject(value);
-        if (json.getInt("status") != 201) {
+        if (!json.getString("status").equalsIgnoreCase("accepted")) {
             result = json.getString("message");
         }
-        if (json.getInt("status") == 201) {
+        if (json.getString("status").equalsIgnoreCase("accepted")) {
             log.info("Value : {}", value);
             result = json.getString("message");
             record.setTo(to);
