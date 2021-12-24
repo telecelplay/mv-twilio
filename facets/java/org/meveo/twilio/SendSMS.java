@@ -65,7 +65,7 @@ public class SendSMS extends Script {
         }
         if (json.getString("status").equalsIgnoreCase("accepted")) {
             log.info("Value : {}", value);
-            result = json.getString("message");
+            result = json.getString("status");
             record.setTo(to);
             record.setMessage(message);
             record.setResponse(result);
