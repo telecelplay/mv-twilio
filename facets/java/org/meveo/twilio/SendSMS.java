@@ -38,13 +38,13 @@ public class SendSMS extends Script {
 
     @Override
     public void execute(Map<String, Object> parameters) throws BusinessException {
-        String TWILIO_SID = "AC76212344a90c381e1167b4a1d190af36";
-        String TWILIO_API_KEY = "52a357f6d47ecd115a493ab15e5ab778";
-        String url = "https://api.twilio.com/2010-04-01/Accounts/AC76212344a90c381e1167b4a1d190af36/Messages.json";
+        String TWILIO_SID = "AC0822dbe191b8ff853c2f1f296704f487";
+        String TWILIO_API_KEY = "442b202831a5a461add58e6d65c9de1a";
+        String url = "https://api.twilio.com/2010-04-01/Accounts/AC0822dbe191b8ff853c2f1f296704f487/Messages.json";
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
         String message = Integer.toString(number);
-        Form map = new Form().param("To", to).param("MessagingServiceSid", "MG2b8962bf2b0f196d3ba43919fcf98bac").param("Body", message).param("From", "+17604927786");
+        Form map = new Form().param("To", to).param("MessagingServiceSid", "MGa673f690ea0ebb8771bb02fc76d93d6d").param("Body", message).param("From", "+12546138615");
         HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder().nonPreemptive().credentials(TWILIO_SID, TWILIO_API_KEY).build();
         Client client = ClientBuilder.newClient();
         client.register(feature);
