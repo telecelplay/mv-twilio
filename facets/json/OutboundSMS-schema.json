@@ -66,6 +66,17 @@
             "type": "string",
             "maxLength": 20
         },
+        "creationDate": {
+            "storages": ["SQL"],
+            "nullable": true,
+            "format": "date-time",
+            "description": "Creation date",
+            "readOnly": false,
+            "versionable": false,
+            "id": "CE_OutboundSMS_creationDate",
+            "title": "OutboundSMS.creationDate",
+            "type": "string"
+        },
         "message": {
             "storages": ["SQL"],
             "nullable": true,
