@@ -19,7 +19,11 @@ public class OutboundSMS implements CustomEntity {
     @JsonIgnore()
     private DBStorageType storages;
 
+    private String purpose;
+
     private String response;
+
+    private String otpCode;
 
     private String from;
 
@@ -44,12 +48,28 @@ public class OutboundSMS implements CustomEntity {
         this.storages = storages;
     }
 
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
+
     public String getResponse() {
         return response;
     }
 
     public void setResponse(String response) {
         this.response = response;
+    }
+
+    public String getOtpCode() {
+        return otpCode;
+    }
+
+    public void setOtpCode(String otpCode) {
+        this.otpCode = otpCode;
     }
 
     public String getFrom() {
