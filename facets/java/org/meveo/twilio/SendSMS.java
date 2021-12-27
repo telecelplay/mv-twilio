@@ -12,10 +12,12 @@ import javax.ws.rs.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.ws.rs.core.*;
+import org.meveo.model.customEntities.Credential;
 import org.meveo.service.storage.RepositoryService;
 import org.meveo.model.storage.Repository;
 import org.meveo.api.persistence.CrossStorageApi;
 import org.meveo.model.persistence.CEIUtils;
+import org.meveo.credentials.CredentialHelperService;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 public class SendSMS extends Script {
@@ -35,11 +37,20 @@ public class SendSMS extends Script {
     private RepositoryService repositoryService = getCDIBean(RepositoryService.class);
 
     private Repository defaultRepo = repositoryService.findDefaultRepository();
+  
+  
+	static final private String TWILIO_URL = "api.twilio.com";
 
     @Override
     public void execute(Map<String, Object> parameters) throws BusinessException {
-        String TWILIO_SID = "AC0822dbe191b8ff853c2f1f296704f487";
-        String TWILIO_API_KEY = "442b202831a5a461add58e6d65c9de1a";
+		Credential credential  = CredentialHelperService.getCredential(TWILIO_URL,crossStorageApi,defaultRepo);
+      	if(credential==null){
+        	throw new BusinessException("No credential found for "+TWILIO_URL);
+      	} else {
+        	log.info("using credential {} with username {}",credential.getUuid(),credential.getUsername());
+      	}
+        String TWILIO_SID = credential.getPassword();
+        String TWILIO_API_KEY = credential.getApiKey();
         String url = "https://api.twilio.com/2010-04-01/Accounts/AC0822dbe191b8ff853c2f1f296704f487/Messages.json";
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
