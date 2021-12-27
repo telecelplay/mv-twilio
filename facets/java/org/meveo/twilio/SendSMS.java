@@ -51,11 +51,12 @@ public class SendSMS extends Script {
       	}
         String TWILIO_SID = credential.getPassword();
         String TWILIO_API_KEY = credential.getApiKey();
-        String url = "https://api.twilio.com/2010-04-01/Accounts/AC0822dbe191b8ff853c2f1f296704f487/Messages.json";
+        String TWILIO_MESSAGE_ID = credential.getToken();
+        String url = "https://api.twilio.com/2010-04-01/Accounts/"+TWILIO_SID+"/Messages.json";
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
         String message = Integer.toString(number);
-        Form map = new Form().param("To", to).param("MessagingServiceSid", "MGa673f690ea0ebb8771bb02fc76d93d6d").param("Body", message).param("From", "+12546138615");
+        Form map = new Form().param("To", to).param("MessagingServiceSid", TWILIO_MESSAGE_ID).param("Body", message).param("From", "+12546138615");
         HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder().nonPreemptive().credentials(TWILIO_SID, TWILIO_API_KEY).build();
         Client client = ClientBuilder.newClient();
         client.register(feature);
