@@ -84,7 +84,7 @@ public class SendOtp extends Script {
         String from =  credential.getRefreshToken();
         String url = "https://api.twilio.com/2010-04-01/Accounts/"+TWILIO_SID+"/Messages.json";
         Random rnd = new Random();
-        int otp = rnd.nextInt(999999);
+        String otp =  String.format("%06d", rnd.nextInt(999999));
         String message = "Your telecelplay verification code is:"+otp;
         Form map = new Form().param("To", to).param("MessagingServiceSid", TWILIO_MESSAGE_ID).param("Body", message).param("From", from);
         Client client = ClientBuilder.newClient();
@@ -107,7 +107,7 @@ public class SendOtp extends Script {
             log.info("Value : {}", value);
             record.setCreationDate(Instant.now());
             record.setPurpose("OTP");
-            record.setOtpCode(""+otp);
+            record.setOtpCode(otp);
             record.setTo(to);
             record.setMessage(message);
             record.setResponse(result);
