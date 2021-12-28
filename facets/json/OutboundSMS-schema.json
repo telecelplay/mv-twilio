@@ -87,6 +87,17 @@
             "title": "OutboundSMS.message",
             "type": "string",
             "maxLength": 800
+        },
+        "verificationDate": {
+            "storages": ["SQL"],
+            "nullable": true,
+            "format": "date-time",
+            "description": "OTP verification date",
+            "readOnly": false,
+            "versionable": false,
+            "id": "CE_OutboundSMS_verificationDate",
+            "title": "OutboundSMS.verificationDate",
+            "type": "string"
         }
     }
 }
