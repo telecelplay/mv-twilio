@@ -44,6 +44,7 @@ public class VerifyOtp extends Script {
     private static final Duration maxDelay = Duration.ofMinutes(3);
     @Override
     public void execute(Map<String, Object> parameters) throws BusinessException {
+        log.info("verify otp:{} to:{}",otp,to);
         String result="invalid_request";
 		OutboundSMS outboundSMS = crossStorageApi.find(defaultRepo, OutboundSMS.class)
           .by("to", to)
