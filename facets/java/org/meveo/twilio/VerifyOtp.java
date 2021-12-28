@@ -66,7 +66,7 @@ public class VerifyOtp extends Script {
             outboundSMS.setVerificationDate(Instant.now());
             result="success";
           } else {
-            outboundSMS.setVerificationAttempts(attempts++);
+            outboundSMS.setVerificationAttempts(++attempts);
             result="invalid_code";
           }
           try {
