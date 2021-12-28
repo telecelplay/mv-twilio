@@ -59,7 +59,7 @@ public class VerifyOtp extends Script {
           .getResult();
         if(outboundSMS!=null){
           long attempts=outboundSMS.getVerificationAttempts();
-          if(attempts>maxAttemps || Duration.between(outboundSMS.getCreationDate(),Instant.now()).compareTo(maxDelay)>0){
+          if(attempts>=maxAttemps || Duration.between(outboundSMS.getCreationDate(),Instant.now()).compareTo(maxDelay)>0){
             outboundSMS.setFailureDate(Instant.now());
             result="invalid_request";
           } else if(otp!=null && otp.equals(outboundSMS.getOtpCode())){
