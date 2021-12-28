@@ -45,12 +45,12 @@ public class VerifyOtp extends Script {
     @Override
     public void execute(Map<String, Object> parameters) throws BusinessException {
         log.info("verify otp:{} to:{}",otp,to);
-        String result="invalid_request";
+        result="invalid_request";
 		OutboundSMS outboundSMS = crossStorageApi.find(defaultRepo, OutboundSMS.class)
           .by("to", to)
           .by("purpose","OTP")
           .by("verificationDate","IS_NULL")
-          .orderBy("creationDate",false) // order by descendin creationDate
+          .orderBy("creationDate",false) // order by descending creationDate
           .getResult();
         if(outboundSMS!=null){
           outboundSMS.setVerificationDate(Instant.now());
