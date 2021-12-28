@@ -34,6 +34,8 @@ public class OutboundSMS implements CustomEntity {
 
     private Instant creationDate;
 
+    private Instant failureDate;
+
     private String message;
 
     private Instant verificationDate;
@@ -109,6 +111,14 @@ public class OutboundSMS implements CustomEntity {
 
     public void setCreationDate(Instant creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Instant getFailureDate() {
+        return failureDate;
+    }
+
+    public void setFailureDate(Instant failureDate) {
+        this.failureDate = failureDate;
     }
 
     public String getMessage() {
