@@ -42,33 +42,39 @@ public class VerifyOtp extends Script {
 
   
     private static final Duration maxDelay = Duration.ofMinutes(3);
+
+    private static final long maxAttemps = 5;
+
+
     @Override
     public void execute(Map<String, Object> parameters) throws BusinessException {
         log.info("verify otp:{} to:{}",otp,to);
         result="invalid_request";
-		OutboundSMS outboundSMS = crossStorageApi.find(defaultRepo, OutboundSMS.class)
+		    OutboundSMS outboundSMS = crossStorageApi.find(defaultRepo, OutboundSMS.class)
           .by("to", to)
           .by("purpose","OTP")
           .by("verificationDate","IS_NULL")
+          .by("failureDate","IS_NULL")
           .orderBy("creationDate",false) // order by descending creationDate
           .getResult();
         if(outboundSMS!=null){
-          outboundSMS.setVerificationDate(Instant.now());
+          if(attempts>maxAttemps || Duration.between(outboundSMS.getCreationDate(),Instant.now()).compareTo(maxDelay)>0){
+            outboundSMS.setFailureDate(Instant.now());
+            result="invalid_request";
+          } else if(otp!=null && otp.equals(outboundSMS.getOtpCode())){
+            outboundSMS.setVerificationDate(Instant.now());
+            result="success";
+          } else {
+            outboundSMS.setVerificationAttempts(attempts++);
+            result="invalid_code";
+            return;
+          }
           try {
             crossStorageApi.createOrUpdate(defaultRepo, outboundSMS);
           } catch (Exception ex) {
                 log.error("error updating twilio record :{}", ex.getMessage());
             	result="server_error";
-          }
-          if(Duration.between(outboundSMS.getCreationDate(),Instant.now()).compareTo(maxDelay)>0){
-            result="request_expired";
-            return;
-          }
-          if(otp!=null && otp.equals(outboundSMS.getOtpCode())){
-            result="success";
-          } else {
-            result="invalid_code";
-            return;
+              return;
           }
         }
     }
