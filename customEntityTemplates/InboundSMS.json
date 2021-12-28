@@ -1,1 +1,1 @@
-{"code":"InboundSMS","name":"Inbound SMS","description":"Inbound SMS","availableStorages":["SQL"],"sqlStorageConfiguration":{"storeAsTable":true},"samples":[],"audited":false,"fields":[],"actions":[]}
+{"code":"InboundSMS","name":"Inbound SMS","description":"Inbound SMS","customEntityCategoryCode":"messaging","availableStorages":["SQL"],"sqlStorageConfiguration":{"storeAsTable":true},"samples":[],"audited":false,"fields":[],"actions":[]}
