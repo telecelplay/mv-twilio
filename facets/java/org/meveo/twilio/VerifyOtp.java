@@ -58,6 +58,7 @@ public class VerifyOtp extends Script {
           .orderBy("creationDate",false) // order by descending creationDate
           .getResult();
         if(outboundSMS!=null){
+          long attempts=outboundSMS.getVerificationAttempts();
           if(attempts>maxAttemps || Duration.between(outboundSMS.getCreationDate(),Instant.now()).compareTo(maxDelay)>0){
             outboundSMS.setFailureDate(Instant.now());
             result="invalid_request";
