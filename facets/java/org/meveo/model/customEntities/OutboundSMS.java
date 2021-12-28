@@ -28,6 +28,8 @@ public class OutboundSMS implements CustomEntity {
 
     private String from;
 
+    private Long verificationAttempts;
+
     private String to;
 
     private Instant creationDate;
@@ -83,6 +85,14 @@ public class OutboundSMS implements CustomEntity {
 
     public void setFrom(String from) {
         this.from = from;
+    }
+
+    public Long getVerificationAttempts() {
+        return verificationAttempts;
+    }
+
+    public void setVerificationAttempts(Long verificationAttempts) {
+        this.verificationAttempts = verificationAttempts;
     }
 
     public String getTo() {
