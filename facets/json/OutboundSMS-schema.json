@@ -89,6 +89,17 @@
             "title": "OutboundSMS.creationDate",
             "type": "string"
         },
+        "failureDate": {
+            "storages": ["SQL"],
+            "nullable": true,
+            "format": "date-time",
+            "description": "Failure date",
+            "readOnly": false,
+            "versionable": false,
+            "id": "CE_OutboundSMS_failureDate",
+            "title": "OutboundSMS.failureDate",
+            "type": "string"
+        },
         "message": {
             "storages": ["SQL"],
             "nullable": true,
