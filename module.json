@@ -1,0 +1,9 @@
+{
+  "code" : "twilio",
+  "description" : "Twilio implementation",
+  "license" : "GPL",
+  "currentVersion" : "0.2",
+  "isInDraft" : true,
+  "moduleDependencies" : [ ],
+  "moduleFiles" : [ ]
+}
