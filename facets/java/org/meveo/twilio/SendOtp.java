@@ -32,7 +32,7 @@ public class SendOtp extends Script {
         return result;
     }
 
-    private static final Logger log = LoggerFactory.getLogger(SendSMS.class);
+    private static final Logger log = LoggerFactory.getLogger(SendOtp.class);
 
     private CrossStorageApi crossStorageApi = getCDIBean(CrossStorageApi.class);
 
