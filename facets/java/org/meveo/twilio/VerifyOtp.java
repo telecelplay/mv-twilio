@@ -72,6 +72,7 @@ public class VerifyOtp extends Script {
             outboundSMS.setVerificationAttempts(++attempts);
             result="invalid_code";
           }
+          log.info("result:{}",result);
           try {
             crossStorageApi.createOrUpdate(defaultRepo, outboundSMS);
           } catch (Exception ex) {
