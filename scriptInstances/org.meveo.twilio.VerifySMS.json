@@ -1,0 +1,23 @@
+{
+  "code" : "org.meveo.twilio.VerifySMS",
+  "description" : "verifySMS",
+  "inputs" : [ {
+    "name" : "otp",
+    "type" : "String"
+  }, {
+    "name" : "to",
+    "type" : "String"
+  } ],
+  "outputs" : [ {
+    "name" : "result",
+    "type" : "String"
+  } ],
+  "generateOutputs" : false,
+  "type" : "JAVA",
+  "transactionType" : "SAME",
+  "script" : "package org.meveo.twilio;\r\n\r\nimport java.util.Map;\r\nimport org.meveo.service.script.Script;\r\nimport org.meveo.admin.exception.BusinessException;\r\nimport org.slf4j.Logger;\r\nimport org.slf4j.LoggerFactory;\r\nimport org.meveo.service.storage.RepositoryService;\r\nimport org.meveo.model.storage.Repository;\r\nimport org.meveo.api.persistence.CrossStorageApi;\r\nimport org.meveo.model.customEntities.OutboundSMS;\r\n\r\npublic class VerifySMS extends Script {\r\n\r\n    private static final Logger log = LoggerFactory.getLogger(VerifySMS.class);\r\n\r\n    private CrossStorageApi crossStorageApi = getCDIBean(CrossStorageApi.class);\r\n\r\n    private RepositoryService repositoryService = getCDIBean(RepositoryService.class);\r\n\r\n    private Repository defaultRepo = repositoryService.findDefaultRepository();\r\n\r\n    private String otp;\r\n\r\n    private String to;\r\n\r\n    private String result;\r\n\r\n    public String getResult() {\r\n        return result;\r\n    }\r\n\r\n    public void setOtp(String otp) {\r\n        this.otp = otp;\r\n    }\r\n\r\n    public void setTo(String to) {\r\n        this.to = to;\r\n    }\r\n\r\n    private OutboundSMS getOutboundSMS(String to) {\r\n        return crossStorageApi.find(defaultRepo, OutboundSMS.class).by(\"to\", to).getResult();\r\n    }\r\n\r\n    @Override\r\n    public void execute(Map<String, Object> parameters) throws BusinessException {\r\n        OutboundSMS outboundSMS = null;\r\n        try {\r\n            outboundSMS = getOutboundSMS(to);\r\n            log.info(\"response : {}\" + outboundSMS.getMessage().equalsIgnoreCase(otp));\r\n        } catch (Exception e) {\r\n            throw new BusinessException(e);\r\n        }\r\n        if (outboundSMS.getMessage().equalsIgnoreCase(otp)) {\r\n            log.info(\"Inside Success\");\r\n            result = \"Success\";\r\n        } else {\r\n            result = \"Failure\";\r\n        }\r\n        super.execute(parameters);\r\n    }\r\n}\r\n",
+  "executionRoles" : [ ],
+  "sourcingRoles" : [ ],
+  "mavenDependencies" : [ ],
+  "importScriptInstances" : [ ]
+}
