@@ -1,5 +1,5 @@
 {
-  "code" : "twilio",
+  "code" : "mv-twilio",
   "description" : "Twilio implementation",
   "license" : "GPL",
   "currentVersion" : "0.2",
