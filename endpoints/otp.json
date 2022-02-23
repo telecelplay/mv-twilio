@@ -1,1 +1,17 @@
-{"code":"otp","description":"verify otp, return \"accepted\", \"retry_later\", \"too_many_requests\" or \"server_error\"","secured":true,"checkPathParams":true,"serviceCode":"org.meveo.twilio.SendOtp","synchronous":true,"method":"GET","parameterMappings":[],"pathParameters":["to"],"roles":[],"returnedVariableName":"result","serializeResult":false,"contentType":"plain/text","basePath":"otp","path":"/{to}"}
+{
+  "code" : "otp",
+  "description" : "verify otp, return \"accepted\", \"retry_later\", \"too_many_requests\" or \"server_error\"",
+  "secured" : true,
+  "checkPathParams" : true,
+  "serviceCode" : "org.meveo.twilio.SendOtp",
+  "synchronous" : true,
+  "method" : "GET",
+  "parameterMappings" : [ ],
+  "pathParameters" : [ "to" ],
+  "roles" : [ ],
+  "returnedVariableName" : "result",
+  "serializeResult" : false,
+  "contentType" : "plain/text",
+  "basePath" : "otp",
+  "path" : "/{to}"
+}
