@@ -65,7 +65,7 @@ public class SendOtp extends Script {
             result="retry_later";
             return;
           }
-          if(lastSMSList.size()>=maxMessageInDay){
+          if(lastSMSList.size()>maxMessageInDay){
             result="too_many_requests";
             return;
           }
