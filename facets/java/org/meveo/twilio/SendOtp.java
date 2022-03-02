@@ -42,7 +42,7 @@ public class SendOtp extends Script {
     private String otpMessage = config
             .getProperty("otp.message.format", "Your %s verification code is: %s");
     private Duration retryTimeLimit = Duration.ofSeconds(Long.parseLong(retryDelay));
-    private int retryLimitPerDay = Integer.parseInt(retryLimit, "10");
+    private int retryLimitPerDay = Integer.parseInt(retryLimit, 10);
 
     private String to;
     private String result;
