@@ -1,85 +1,88 @@
 package org.meveo.twilio;
 
-import java.util.Map;
-import org.meveo.service.script.Script;
-import org.meveo.admin.exception.BusinessException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.meveo.service.storage.RepositoryService;
-import org.meveo.model.storage.Repository;
-import org.meveo.api.persistence.CrossStorageApi;
-import org.meveo.model.customEntities.OutboundSMS;
 import java.time.Instant;
 import java.time.Duration;
+import java.util.Map;
+
+import org.meveo.admin.exception.BusinessException;
+import org.meveo.api.persistence.CrossStorageApi;
+import org.meveo.commons.utils.ParamBean;
+import org.meveo.commons.utils.ParamBeanFactory;
+import org.meveo.model.customEntities.OutboundSMS;
+import org.meveo.model.storage.Repository;
+import org.meveo.service.script.Script;
+import org.meveo.service.storage.RepositoryService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class VerifyOtp extends Script {
 
-    private static final Logger log = LoggerFactory.getLogger(VerifyOtp.class);
+  private static final Logger LOG = LoggerFactory.getLogger(VerifyOtp.class);
 
-    private CrossStorageApi crossStorageApi = getCDIBean(CrossStorageApi.class);
+  private CrossStorageApi crossStorageApi = getCDIBean(CrossStorageApi.class);
+  private RepositoryService repositoryService = getCDIBean(RepositoryService.class);
+  private Repository defaultRepo = repositoryService.findDefaultRepository();
+  private ParamBeanFactory paramBeanFactory = getCDIBean(ParamBeanFactory.class);
+  private ParamBean config = paramBeanFactory.getInstance();
 
-    private RepositoryService repositoryService = getCDIBean(RepositoryService.class);
+  private String verificationDelay = config.getProperty("otp.verification.delay", "3");
+  private String verificationLimit = config.getProperty("otp.verification.limit", "5");
+  private Duration maxDelay = Duration.ofMinutes(Long.parseLong(verificationDelay));
+  private long maxAttempts = Long.parseLong(verificationLimit);
 
-    private Repository defaultRepo = repositoryService.findDefaultRepository();
+  private String otp;
+  private String to;
+  private String result;
 
-    private String otp;
+  public String getResult() {
+    return result;
+  }
 
-    private String to;
+  public void setOtp(String otp) {
+    this.otp = otp;
+  }
 
-    private String result;
+  public void setTo(String to) {
+    this.to = to;
+  }
 
-    public String getResult() {
-        return result;
+  @Override
+  public void execute(Map<String, Object> parameters) throws BusinessException {
+    LOG.info("verify otp:{} to:{}", otp, to);
+    result = "invalid_request";
+    OutboundSMS latestSMS = crossStorageApi.find(defaultRepo, OutboundSMS.class)
+        .by("to", to)
+        .by("purpose", "OTP")
+        .by("verificationDate", "IS_NULL")
+        .by("failureDate", "IS_NULL")
+        .orderBy("creationDate", false) // newest to oldest
+        .getResult(); // get newest
+    if (latestSMS != null) {
+      long attempts = latestSMS.getVerificationAttempts();
+      Duration delay = Duration.between(latestSMS.getCreationDate(), Instant.now());
+      boolean isDelayed = delay.compareTo(maxDelay) > 0;
+      LOG.info("creation date: {}", latestSMS.getCreationDate());
+      LOG.info("delay: {}", delay);
+      LOG.info("isDelayed: {}", isDelayed);
+      if (attempts >= maxAttempts || isDelayed) {
+        latestSMS.setFailureDate(Instant.now());
+        result = "invalid_request";
+      } else if (otp != null && otp.equals(latestSMS.getOtpCode())) {
+        latestSMS.setVerificationDate(Instant.now());
+        result = "success";
+      } else {
+        latestSMS.setVerificationAttempts(++attempts);
+        result = "invalid_code";
+      }
+      LOG.info("result:{}", result);
+      try {
+        crossStorageApi.createOrUpdate(defaultRepo, latestSMS);
+      } catch (Exception ex) {
+        LOG.error("error updating twilio record :{}", ex.getMessage());
+        result = "server_error";
+        return;
+      }
     }
-
-    public void setOtp(String otp) {
-        this.otp = otp;
-    }
-
-    public void setTo(String to) {
-        this.to = to;
-    }
-
-  
-    private static final Duration maxDelay = Duration.ofMinutes(3);
-
-    private static final long maxAttemps = 5;
-
-
-    @Override
-    public void execute(Map<String, Object> parameters) throws BusinessException {
-        log.info("verify otp:{} to:{}",otp,to);
-        result="invalid_request";
-		    OutboundSMS outboundSMS = crossStorageApi.find(defaultRepo, OutboundSMS.class)
-          .by("to", to)
-          .by("purpose","OTP")
-          .by("verificationDate","IS_NULL")
-          .by("failureDate","IS_NULL")
-          .orderBy("creationDate",false) // order by descending creationDate
-          .getResult();
-        if(outboundSMS!=null){
-          long attempts=outboundSMS.getVerificationAttempts();
-          log.info("outboundSMS.getCreationDate:{}",outboundSMS.getCreationDate());
-          log.info("Duration:{}",Duration.between(outboundSMS.getCreationDate(),Instant.now()));
-          log.info("compare:{}",Duration.between(outboundSMS.getCreationDate(),Instant.now()).compareTo(maxDelay));
-          if(attempts>=maxAttemps || Duration.between(outboundSMS.getCreationDate(),Instant.now()).compareTo(maxDelay)>0){
-            outboundSMS.setFailureDate(Instant.now());
-            result="invalid_request";
-          } else if(otp!=null && otp.equals(outboundSMS.getOtpCode())){
-            outboundSMS.setVerificationDate(Instant.now());
-            result="success";
-          } else {
-            outboundSMS.setVerificationAttempts(++attempts);
-            result="invalid_code";
-          }
-          log.info("result:{}",result);
-          try {
-            crossStorageApi.createOrUpdate(defaultRepo, outboundSMS);
-          } catch (Exception ex) {
-                log.error("error updating twilio record :{}", ex.getMessage());
-            	result="server_error";
-              return;
-          }
-        }
-    }
+  }
 }
