@@ -10,6 +10,8 @@ import javax.ws.rs.client.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import javax.xml.bind.DatatypeConverter;
 
 import org.meveo.admin.exception.BusinessException;
@@ -100,11 +102,9 @@ public class SendOtp extends Script {
         String message = String.format(otpMessage, otpAppName, otp);
         LOG.info("Sending OTP {} to {}", otp, to);
         Form map = new Form()
-                .param("to", to)
-                .param("from", TWILIO_PHONE_NUMBER)
-                .param("body", message);
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(url);
+                .param("to", URLEncoder.encode(to, StandardCharsets.UTF_8))
+                .param("from", URLEncoder.encode(TWILIO_PHONE_NUMBER, StandardCharsets.UTF_8))
+                .param("body", URLEncoder.encode(message, StandardCharsets.UTF_8));
         OutboundSMS outboundSMS = new OutboundSMS();
         String response = null;
         try {
@@ -112,8 +112,8 @@ public class SendOtp extends Script {
                     .target(url)
                     .request(MediaType.APPLICATION_FORM_URLENCODED)
                     .header("Authorization", "Basic " + DatatypeConverter.printBase64Binary(
-                            (TWILIO_SID + ":" + TWILIO_TOKEN).getBytes("UTF-8")))
-                    .post(Entity.entity(map, MediaType.APPLICATION_FORM_URLENCODED), String.class);
+                            (TWILIO_SID + ":" + TWILIO_TOKEN).getBytes(StandardCharsets.UTF_8)))
+                    .post(Entity.form(map), String.class);
         } catch (Exception e) {
             LOG.error("Sending SMS via Twilio failed: {}", e);
             result = "server_error";
