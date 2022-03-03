@@ -116,7 +116,7 @@ public class SendOtp extends Script {
         }
         String value = response.readEntity(String.class);
         LOG.info("response: {}", value);
-        JSONObject json = new Gson().fromJson(value, JSONObject.class);
+        JsonObject json = new Gson().fromJson(value, JsonObject.class);
         result = json.get("status").getAsString();
         if ("accepted".equalsIgnoreCase(result)) {
             LOG.info("Value : {}", value);
