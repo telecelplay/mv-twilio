@@ -22,9 +22,10 @@ import org.meveo.service.script.Script;
 import org.meveo.service.storage.RepositoryService;
 
 import org.slf4j.LoggerFactory;
-import org.json.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.gson.*;
 
 public class SendOtp extends Script {
     private static final Logger LOG = LoggerFactory.getLogger(SendOtp.class);
@@ -115,7 +116,7 @@ public class SendOtp extends Script {
         }
         String value = response.readEntity(String.class);
         LOG.info("response: {}", value);
-        JSONObject json = new JSONObject(value);
+        JSONObject json = new Gson().fromJson(value, JSONObject.class);
         result = json.get("status").getAsString();
         if ("accepted".equalsIgnoreCase(result)) {
             LOG.info("Value : {}", value);
