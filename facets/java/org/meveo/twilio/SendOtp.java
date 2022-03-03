@@ -98,6 +98,7 @@ public class SendOtp extends Script {
         Random rnd = new Random();
         String otp = String.format("%06d", rnd.nextInt(999999));
         String message = String.format(otpMessage, otpAppName, otp);
+        LOG.info("Sending OTP {} to {}", otp, to);
         Form map = new Form()
                 .param("to", to)
                 .param("from", TWILIO_PHONE_NUMBER)
@@ -105,24 +106,22 @@ public class SendOtp extends Script {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(url);
         OutboundSMS outboundSMS = new OutboundSMS();
-        Response response = null;
+        String response = null;
         try {
             response = ClientBuilder.newClient()
                     .target(url)
                     .request(MediaType.APPLICATION_FORM_URLENCODED)
                     .header("Authorization", "Basic " + DatatypeConverter.printBase64Binary(
                             (TWILIO_SID + ":" + TWILIO_TOKEN).getBytes("UTF-8")))
-                    .post(Entity.form(map), Response.class);
-
-            LOG.info("Response : {}", response);
+                    .post(Entity.form(map), Response.class)
+                    .readEntity(String.class);
         } catch (Exception e) {
             LOG.error("Sending SMS via Twilio failed: {}", e);
             result = "server_error";
             return;
         }
-        String value = response.readEntity(String.class);
-        LOG.info("response: {}", value);
-        JsonObject json = new Gson().fromJson(value, JsonObject.class);
+        LOG.info("response: {}", response);
+        JsonObject json = new Gson().fromJson(response, JsonObject.class);
         result = json.get("status").getAsString();
         if ("accepted".equalsIgnoreCase(result)) {
             LOG.info("Value : {}", value);
@@ -138,6 +137,9 @@ public class SendOtp extends Script {
                 LOG.error("error updating outboundSMS CEI: {}", e);
                 result = "server_error";
             }
+        } else {
+            LOG.error("Sending SMS via Twilio failed: {}", response);
+            result = "server_error";
         }
     }
 }
