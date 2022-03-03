@@ -109,6 +109,7 @@ public class SendOtp extends Script {
         try {
             response = ClientBuilder.newClient()
                     .target(url)
+                    .request(MediaType.APPLICATION_FORM_URLENCODED)
                     .header("Authorization", "Basic " + DatatypeConverter.printBase64Binary(
                             (TWILIO_SID + ":" + TWILIO_TOKEN).getBytes("UTF-8")))
                     .post(Entity.form(map), Response.class);
