@@ -122,8 +122,9 @@ public class SendOtp extends Script {
         }
         LOG.info("response: {}", response);
         JsonObject json = new Gson().fromJson(response, JsonObject.class);
-        result = json.get("status").getAsString();
-        if ("accepted".equalsIgnoreCase(result)) {
+        result = json.get("sid").getAsString();
+        LOG.info("result: {}", result);
+        if (result != null && !result.isEmpty()) {
             outboundSMS.setCreationDate(Instant.now());
             outboundSMS.setPurpose("OTP");
             outboundSMS.setOtpCode(otp);
