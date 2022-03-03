@@ -8,6 +8,9 @@ import java.time.Instant;
 import java.time.Duration;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.*;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import javax.xml.bind.DatatypeConverter;
 
 import org.meveo.admin.exception.BusinessException;
 import org.meveo.api.persistence.CrossStorageApi;
@@ -88,26 +91,28 @@ public class SendOtp extends Script {
                     credential.getUsername());
         }
         String TWILIO_SID = credential.getUsername();
-        String TWILIO_MESSAGE_ID = credential.getToken();
+        String TWILIO_TOKEN = credential.getToken();
         String TWILIO_PHONE_NUMBER = credential.getRefreshToken();
-        String from = TWILIO_PHONE_NUMBER;
-        if (from == null || from.isEmpty()) {
-            from = TWILIO_MESSAGE_ID;
-        }
 
         String url = "https://api.twilio.com/2010-04-01/Accounts/" + TWILIO_SID + "/Messages.json";
         Random rnd = new Random();
         String otp = String.format("%06d", rnd.nextInt(999999));
         String message = String.format(otpMessage, otpAppName, otp);
-        Form map = new Form().param("to", to).param("from", from).param("body", message);
+        Form map = new Form()
+                .param("to", to)
+                .param("from", TWILIO_PHONE_NUMBER)
+                .param("body", message);
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(url);
         OutboundSMS outboundSMS = new OutboundSMS();
         Response response = null;
         try {
-            response = CredentialHelperService
-                    .setCredential(target.request(), credential)
+            response = ClientBuilder.newClient()
+                    .target(url)
+                    .header("Authorization", "Basic " + DatatypeConverter.printBase64Binary(
+                            (TWILIO_SID + ":" + TWILIO_TOKEN).getBytes("UTF-8")))
                     .post(Entity.form(map), Response.class);
+
             LOG.info("Response : {}", response);
         } catch (Exception e) {
             LOG.error("Sending SMS via Twilio failed: {}", e);
