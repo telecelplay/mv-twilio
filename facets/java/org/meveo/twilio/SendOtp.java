@@ -102,9 +102,9 @@ public class SendOtp extends Script {
         String message = String.format(otpMessage, otpAppName, otp);
         LOG.info("Sending OTP {} to {}", otp, to);
         Form map = new Form()
-                .param("to", URLEncoder.encode(to, StandardCharsets.UTF_8))
-                .param("from", URLEncoder.encode(TWILIO_PHONE_NUMBER, StandardCharsets.UTF_8))
-                .param("body", URLEncoder.encode(message, StandardCharsets.UTF_8));
+                .param("To", to)
+                .param("From", TWILIO_PHONE_NUMBER)
+                .param("Body", message);
         OutboundSMS outboundSMS = new OutboundSMS();
         String response = null;
         try {
