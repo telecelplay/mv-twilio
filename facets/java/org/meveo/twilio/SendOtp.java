@@ -27,6 +27,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.*;
 
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
+
 public class SendOtp extends Script {
     private static final Logger LOG = LoggerFactory.getLogger(SendOtp.class);
     private static final String TWILIO_URL = "api.twilio.com";
@@ -88,43 +92,36 @@ public class SendOtp extends Script {
                     credential.getUsername());
         }
         String TWILIO_SID = credential.getUsername();
-        String TWILIO_MESSAGE_ID = credential.getToken();
+        String TWILIO_TOKEN = credential.getToken();
         String TWILIO_PHONE_NUMBER = credential.getRefreshToken();
-        String from = TWILIO_PHONE_NUMBER;
-        if (from == null || from.isEmpty()) {
-            from = TWILIO_MESSAGE_ID;
-        }
 
-        String url = "https://api.twilio.com/2010-04-01/Accounts/" + TWILIO_SID + "/Messages.json";
         Random rnd = new Random();
         String otp = String.format("%06d", rnd.nextInt(999999));
-        String message = String.format(otpMessage, otpAppName, otp);
-        Form map = new Form().param("to", to).param("from", from).param("body", message);
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(url);
-        OutboundSMS outboundSMS = new OutboundSMS();
-        Response response = null;
-        try {
-            response = CredentialHelperService
-                    .setCredential(target.request(), credential)
-                    .post(Entity.form(map), Response.class);
-            LOG.info("Response : {}", response);
-        } catch (Exception e) {
-            LOG.error("error while hitting  twilio url :{}", e);
+        String body = String.format(otpMessage, otpAppName, otp);
+
+        Twilio.init(TWILIO_SID, TWILIO_TOKEN);
+        Message message = Message
+                .creator(
+                        new PhoneNumber(to),
+                        new PhoneNumber(TWILIO_PHONE_NUMBER),
+                        body)
+                .create();
+
+        String error = message.getErrorMessage();
+        if (error != null) {
+            LOG.error("Twilio error: {}", error);
             result = "server_error";
             return;
         }
-        String value = response.readEntity(String.class);
-        LOG.info("response: {}", value);
-        JsonObject json = new Gson().fromJson(value, JsonObject.class);
-        result = json.get("status").getAsString();
-        if ("accepted".equalsIgnoreCase(result)) {
-            LOG.info("Value : {}", value);
+
+        Message.Status status = message.getStatus();
+        if (Message.Status.ACCEPTED.equals(status)) {
+            OutboundSMS outboundSMS = new OutboundSMS();
             outboundSMS.setCreationDate(Instant.now());
             outboundSMS.setPurpose("OTP");
             outboundSMS.setOtpCode(otp);
             outboundSMS.setTo(to);
-            outboundSMS.setMessage(message);
+            outboundSMS.setMessage(body);
             outboundSMS.setResponse(result);
             try {
                 crossStorageApi.createOrUpdate(defaultRepo, outboundSMS);
