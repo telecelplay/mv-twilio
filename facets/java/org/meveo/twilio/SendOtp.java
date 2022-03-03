@@ -108,8 +108,8 @@ public class SendOtp extends Script {
                     .setCredential(target.request(), credential)
                     .post(Entity.form(map), Response.class);
             LOG.info("Response : {}", response);
-        } catch (Exception ex) {
-            LOG.error("error while hitting  twilio url :{}", ex.getMessage());
+        } catch (Exception e) {
+            LOG.error("error while hitting  twilio url :{}", e);
             result = "server_error";
             return;
         }
@@ -126,8 +126,8 @@ public class SendOtp extends Script {
             outboundSMS.setResponse(result);
             try {
                 crossStorageApi.createOrUpdate(defaultRepo, outboundSMS);
-            } catch (Exception ex) {
-                LOG.error("error updating outboundSMS CEI: {}", ex.getMessage());
+            } catch (Exception e) {
+                LOG.error("error updating outboundSMS CEI: {}", e);
                 result = "server_error";
             }
         }
