@@ -113,8 +113,7 @@ public class SendOtp extends Script {
                     .request(MediaType.APPLICATION_FORM_URLENCODED)
                     .header("Authorization", "Basic " + DatatypeConverter.printBase64Binary(
                             (TWILIO_SID + ":" + TWILIO_TOKEN).getBytes("UTF-8")))
-                    .post(Entity.form(map), Response.class)
-                    .readEntity(String.class);
+                    .post(Entity.entity(map, MediaType.APPLICATION_FORM_URLENCODED), String.class);
         } catch (Exception e) {
             LOG.error("Sending SMS via Twilio failed: {}", e);
             result = "server_error";
