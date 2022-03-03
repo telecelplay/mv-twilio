@@ -124,13 +124,13 @@ public class SendOtp extends Script {
         JsonObject json = new Gson().fromJson(response, JsonObject.class);
         result = json.get("status").getAsString();
         if ("accepted".equalsIgnoreCase(result)) {
-            LOG.info("Value : {}", value);
             outboundSMS.setCreationDate(Instant.now());
             outboundSMS.setPurpose("OTP");
             outboundSMS.setOtpCode(otp);
             outboundSMS.setTo(to);
             outboundSMS.setMessage(message);
             outboundSMS.setResponse(result);
+            LOG.info("Saving outboundSMS {}", outboundSMS);
             try {
                 crossStorageApi.createOrUpdate(defaultRepo, outboundSMS);
             } catch (Exception e) {
