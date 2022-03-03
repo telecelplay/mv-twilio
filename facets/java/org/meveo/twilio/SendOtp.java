@@ -114,6 +114,7 @@ public class SendOtp extends Script {
             return;
         }
         String value = response.readEntity(String.class);
+        LOG.info("response: {}", value);
         JSONObject json = new JSONObject(value);
         result = json.getString("status");
         if ("accepted".equalsIgnoreCase(result)) {
