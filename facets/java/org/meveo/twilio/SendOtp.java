@@ -89,7 +89,7 @@ public class SendOtp extends Script {
             result = "server_error";
             return;
         } else {
-            LOG.info("using credential {} with username {}", credential.getUuid(),
+            LOG.debug("using credential {} with username {}", credential.getUuid(),
                     credential.getUsername());
         }
         String TWILIO_SID = credential.getUsername();
@@ -100,7 +100,7 @@ public class SendOtp extends Script {
         Random rnd = new Random();
         String otp = String.format("%06d", rnd.nextInt(999999));
         String message = String.format(otpMessage, otpAppName, otp);
-        LOG.info("Sending OTP {} to {}", otp, to);
+        LOG.debug("Sending OTP {} to {}", otp, to);
         Form map = new Form()
                 .param("To", to)
                 .param("From", TWILIO_PHONE_NUMBER)
@@ -120,11 +120,11 @@ public class SendOtp extends Script {
             result = "server_error";
             return;
         }
-        LOG.info("response: {}", response);
+        LOG.debug("response: {}", response);
         JsonObject json = new Gson().fromJson(response, JsonObject.class);
         String messageId = json.get("sid").getAsString();
         result = json.get("status").getAsString();
-        LOG.info("result: {}", result);
+        LOG.debug("result: {}", result);
         if (messageId != null && !messageId.isEmpty()) {
             outboundSMS.setCreationDate(Instant.now());
             outboundSMS.setPurpose("OTP");
@@ -132,7 +132,7 @@ public class SendOtp extends Script {
             outboundSMS.setTo(to);
             outboundSMS.setMessage(message);
             outboundSMS.setResponse(result);
-            LOG.info("Saving outboundSMS {}", outboundSMS);
+            LOG.debug("Saving outboundSMS {}", outboundSMS);
             try {
                 crossStorageApi.createOrUpdate(defaultRepo, outboundSMS);
             } catch (Exception e) {
