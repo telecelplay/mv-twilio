@@ -116,7 +116,7 @@ public class SendOtp extends Script {
         String value = response.readEntity(String.class);
         LOG.info("response: {}", value);
         JSONObject json = new JSONObject(value);
-        result = json.getString("status");
+        result = json.get("status").getAsString();
         if ("accepted".equalsIgnoreCase(result)) {
             LOG.info("Value : {}", value);
             outboundSMS.setCreationDate(Instant.now());
