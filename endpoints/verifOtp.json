@@ -3,7 +3,7 @@
   "description" : "verify otp, return \"success\", \"invalid_request\", \"invalid_code\" or \"server_error\"",
   "secured" : true,
   "checkPathParams" : false,
-  "serviceCode" : "org.meveo.twilio.VerifyOtp",
+  "serviceCode" : "io.liquichain.klubcoin.VerifyKlubcoinOtp",
   "synchronous" : true,
   "method" : "POST",
   "parameterMappings" : [ {
