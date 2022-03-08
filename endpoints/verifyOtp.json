@@ -1,0 +1,23 @@
+{
+  "code" : "verifyOtp",
+  "description" : "verify otp, return \"success\", \"invalid_request\", \"invalid_code\" or \"server_error\"",
+  "secured" : true,
+  "checkPathParams" : false,
+  "serviceCode" : "org.meveo.twilio.VerifyOtp",
+  "synchronous" : true,
+  "method" : "POST",
+  "parameterMappings" : [ {
+    "serviceParameter" : "otp",
+    "multivalued" : false,
+    "parameterName" : "otp",
+    "defaultValue" : "0",
+    "valueRequired" : true
+  } ],
+  "pathParameters" : [ "to" ],
+  "roles" : [ ],
+  "returnedVariableName" : "result",
+  "serializeResult" : false,
+  "contentType" : "text/plain",
+  "basePath" : "verifyOtp",
+  "path" : "/{to}"
+}
