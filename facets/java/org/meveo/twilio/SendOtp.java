@@ -89,7 +89,7 @@ public class SendOtp extends Script {
             result = "server_error";
             return;
         } else {
-            LOG.debug("using credential {} with username {}", credential.getUuid(),
+            LOG.info("using credential {} with username {}", credential.getUuid(),
                     credential.getUsername());
         }
         String TWILIO_SID = credential.getUsername();
@@ -100,7 +100,7 @@ public class SendOtp extends Script {
         Random rnd = new Random();
         String otp = String.format("%06d", rnd.nextInt(999999));
         String message = String.format(otpMessage, otpAppName, otp);
-        LOG.debug("Sending OTP {} to {}", otp, to);
+        LOG.info("Sending OTP {} to {}", otp, to);
         Form map = new Form()
                 .param("To", to)
                 .param("From", TWILIO_PHONE_NUMBER)
@@ -120,11 +120,17 @@ public class SendOtp extends Script {
             result = "server_error";
             return;
         }
-        LOG.debug("response: {}", response);
-        JsonObject json = new Gson().fromJson(response, JsonObject.class);
-        String messageId = json.get("sid").getAsString();
-        result = json.get("status").getAsString();
-        LOG.debug("result: {}", result);
+        LOG.info("response: {}", response);
+        String messageId = null;
+        try {
+            JsonObject json = new JsonParser().parse(response).getAsJsonObject();
+            messageId = json.get("sid").getAsString();
+            result = json.get("status").getAsString();
+        } catch (Exception e) {
+            LOG.error("Parsing Twilio response failed: {}", e);
+            result = "server_error";
+            return;
+        }
         if (messageId != null && !messageId.isEmpty()) {
             outboundSMS.setCreationDate(Instant.now());
             outboundSMS.setPurpose("OTP");
@@ -132,7 +138,7 @@ public class SendOtp extends Script {
             outboundSMS.setTo(to);
             outboundSMS.setMessage(message);
             outboundSMS.setResponse(result);
-            LOG.debug("Saving outboundSMS {}", outboundSMS);
+            LOG.info("Saving outboundSMS {}", outboundSMS);
             try {
                 crossStorageApi.createOrUpdate(defaultRepo, outboundSMS);
             } catch (Exception e) {
@@ -143,5 +149,6 @@ public class SendOtp extends Script {
             LOG.error("Sending SMS via Twilio failed: {}", response);
             result = "server_error";
         }
+        LOG.info("result: {}", result);
     }
 }
