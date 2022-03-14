@@ -76,7 +76,7 @@
             "id": "CE_OutboundSMS_to",
             "title": "OutboundSMS.to",
             "type": "string",
-            "maxLength": 20
+            "maxLength": 255
         },
         "creationDate": {
             "storages": ["SQL"],
