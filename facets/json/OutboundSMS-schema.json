@@ -4,41 +4,5 @@
     "$schema": "http://json-schema.org/draft-07/schema",
     "id": "OutboundSMS",
     "title": "Outbound SMS",
-    "type": "object",
-    "properties": {
-        "verificationAttempts": {
-            "storages": ["SQL"],
-            "default": 0,
-            "nullable": true,
-            "description": "Number of verification attempts",
-            "readOnly": false,
-            "versionable": false,
-            "id": "CE_OutboundSMS_verificationAttempts",
-            "title": "OutboundSMS.verificationAttempts",
-            "type": "integer",
-            "minimum": 0
-        },
-        "to": {
-            "storages": ["SQL"],
-            "nullable": true,
-            "description": "To number",
-            "readOnly": false,
-            "versionable": false,
-            "id": "CE_OutboundSMS_to",
-            "title": "OutboundSMS.to",
-            "type": "string",
-            "maxLength": 20
-        },
-        "message": {
-            "storages": ["SQL"],
-            "nullable": true,
-            "description": "message content",
-            "readOnly": false,
-            "versionable": false,
-            "id": "CE_OutboundSMS_message",
-            "title": "OutboundSMS.message",
-            "type": "string",
-            "maxLength": 800
-        }
-    }
+    "type": "object"
 }
