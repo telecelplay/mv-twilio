@@ -32,6 +32,18 @@
             "type": "string",
             "maxLength": 255
         },
+        "from": {
+            "storages": ["SQL"],
+            "default": "+17604927786",
+            "nullable": true,
+            "description": "From number",
+            "readOnly": false,
+            "versionable": false,
+            "id": "CE_OutboundSMS_from",
+            "title": "OutboundSMS.from",
+            "type": "string",
+            "maxLength": 255
+        },
         "verificationAttempts": {
             "storages": ["SQL"],
             "default": 0,
