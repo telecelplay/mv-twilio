@@ -6,6 +6,18 @@
     "title": "Outbound SMS",
     "type": "object",
     "properties": {
+        "response": {
+            "storages": ["SQL"],
+            "default": "+17604927786",
+            "nullable": true,
+            "description": "sms gateway response",
+            "readOnly": false,
+            "versionable": false,
+            "id": "CE_OutboundSMS_response",
+            "title": "OutboundSMS.response",
+            "type": "string",
+            "maxLength": 255
+        },
         "verificationAttempts": {
             "storages": ["SQL"],
             "default": 0,
