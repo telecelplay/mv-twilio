@@ -20,6 +20,8 @@ public class OutboundSMS implements CustomEntity {
     @JsonIgnore()
     private DBStorageType storages;
 
+    private String purpose;
+
     private String response;
 
     private Long verificationAttempts;
@@ -47,6 +49,14 @@ public class OutboundSMS implements CustomEntity {
 
     public void setStorages(DBStorageType storages) {
         this.storages = storages;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
     }
 
     public String getResponse() {
