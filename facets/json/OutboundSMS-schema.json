@@ -5,16 +5,29 @@
     "id": "OutboundSMS",
     "title": "Outbound SMS",
     "type": "object",
-    "properties": {"verificationAttempts": {
-        "storages": ["SQL"],
-        "default": 0,
-        "nullable": true,
-        "description": "Number of verification attempts",
-        "readOnly": false,
-        "versionable": false,
-        "id": "CE_OutboundSMS_verificationAttempts",
-        "title": "OutboundSMS.verificationAttempts",
-        "type": "integer",
-        "minimum": 0
-    }}
+    "properties": {
+        "verificationAttempts": {
+            "storages": ["SQL"],
+            "default": 0,
+            "nullable": true,
+            "description": "Number of verification attempts",
+            "readOnly": false,
+            "versionable": false,
+            "id": "CE_OutboundSMS_verificationAttempts",
+            "title": "OutboundSMS.verificationAttempts",
+            "type": "integer",
+            "minimum": 0
+        },
+        "message": {
+            "storages": ["SQL"],
+            "nullable": true,
+            "description": "message content",
+            "readOnly": false,
+            "versionable": false,
+            "id": "CE_OutboundSMS_message",
+            "title": "OutboundSMS.message",
+            "type": "string",
+            "maxLength": 800
+        }
+    }
 }
