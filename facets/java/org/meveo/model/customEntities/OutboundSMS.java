@@ -24,6 +24,8 @@ public class OutboundSMS implements CustomEntity {
 
     private String response;
 
+    private String otpCode;
+
     private String from;
 
     private Long verificationAttempts;
@@ -67,6 +69,14 @@ public class OutboundSMS implements CustomEntity {
 
     public void setResponse(String response) {
         this.response = response;
+    }
+
+    public String getOtpCode() {
+        return otpCode;
+    }
+
+    public void setOtpCode(String otpCode) {
+        this.otpCode = otpCode;
     }
 
     public String getFrom() {
