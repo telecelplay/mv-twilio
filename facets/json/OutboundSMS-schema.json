@@ -4,5 +4,17 @@
     "$schema": "http://json-schema.org/draft-07/schema",
     "id": "OutboundSMS",
     "title": "Outbound SMS",
-    "type": "object"
+    "type": "object",
+    "properties": {"verificationAttempts": {
+        "storages": ["SQL"],
+        "default": 0,
+        "nullable": true,
+        "description": "Number of verification attempts",
+        "readOnly": false,
+        "versionable": false,
+        "id": "CE_OutboundSMS_verificationAttempts",
+        "title": "OutboundSMS.verificationAttempts",
+        "type": "integer",
+        "minimum": 0
+    }}
 }
