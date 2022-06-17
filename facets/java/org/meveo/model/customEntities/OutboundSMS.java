@@ -30,6 +30,8 @@ public class OutboundSMS implements CustomEntity {
 
     private String message;
 
+    private Instant verificationDate;
+
     @Override()
     public String getUuid() {
         return uuid;
@@ -85,6 +87,14 @@ public class OutboundSMS implements CustomEntity {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Instant getVerificationDate() {
+        return verificationDate;
+    }
+
+    public void setVerificationDate(Instant verificationDate) {
+        this.verificationDate = verificationDate;
     }
 
     @Override()
