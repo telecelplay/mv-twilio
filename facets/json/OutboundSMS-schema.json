@@ -6,6 +6,20 @@
     "title": "Outbound SMS",
     "type": "object",
     "properties": {
+        "purpose": {
+            "storages": ["SQL"],
+            "default": "FREE_TEXT",
+            "nullable": true,
+            "description": "Purpose",
+            "readOnly": false,
+            "versionable": false,
+            "id": "CE_OutboundSMS_purpose",
+            "title": "OutboundSMS.purpose",
+            "enum": [
+                "FREE_TEXT",
+                "OTP"
+            ]
+        },
         "response": {
             "storages": ["SQL"],
             "default": "+17604927786",
