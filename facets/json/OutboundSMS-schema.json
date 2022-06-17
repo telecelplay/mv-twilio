@@ -18,6 +18,17 @@
             "type": "integer",
             "minimum": 0
         },
+        "to": {
+            "storages": ["SQL"],
+            "nullable": true,
+            "description": "To number",
+            "readOnly": false,
+            "versionable": false,
+            "id": "CE_OutboundSMS_to",
+            "title": "OutboundSMS.to",
+            "type": "string",
+            "maxLength": 255
+        },
         "message": {
             "storages": ["SQL"],
             "nullable": true,
