@@ -19,6 +19,8 @@ public class OutboundSMS implements CustomEntity {
     @JsonIgnore()
     private DBStorageType storages;
 
+    private Long verificationAttempts;
+
     @Override()
     public String getUuid() {
         return uuid;
@@ -34,6 +36,14 @@ public class OutboundSMS implements CustomEntity {
 
     public void setStorages(DBStorageType storages) {
         this.storages = storages;
+    }
+
+    public Long getVerificationAttempts() {
+        return verificationAttempts;
+    }
+
+    public void setVerificationAttempts(Long verificationAttempts) {
+        this.verificationAttempts = verificationAttempts;
     }
 
     @Override()
