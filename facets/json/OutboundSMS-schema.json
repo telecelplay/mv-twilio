@@ -32,6 +32,17 @@
             "type": "string",
             "maxLength": 255
         },
+        "otpCode": {
+            "storages": ["SQL"],
+            "nullable": true,
+            "description": "OTP Code",
+            "readOnly": false,
+            "versionable": false,
+            "id": "CE_OutboundSMS_otpCode",
+            "title": "OutboundSMS.otpCode",
+            "type": "string",
+            "maxLength": 6
+        },
         "from": {
             "storages": ["SQL"],
             "default": "+17604927786",
