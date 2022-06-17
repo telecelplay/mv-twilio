@@ -3,6 +3,7 @@ package org.meveo.model.customEntities;
 import org.meveo.model.CustomEntity;
 import java.util.List;
 import org.meveo.model.persistence.DBStorageType;
+import java.time.Instant;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class OutboundSMS implements CustomEntity {
@@ -22,6 +23,8 @@ public class OutboundSMS implements CustomEntity {
     private Long verificationAttempts;
 
     private String to;
+
+    private Instant creationDate;
 
     private String message;
 
@@ -56,6 +59,14 @@ public class OutboundSMS implements CustomEntity {
 
     public void setTo(String to) {
         this.to = to;
+    }
+
+    public Instant getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Instant creationDate) {
+        this.creationDate = creationDate;
     }
 
     public String getMessage() {
