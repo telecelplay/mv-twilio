@@ -21,6 +21,8 @@ public class OutboundSMS implements CustomEntity {
 
     private Long verificationAttempts;
 
+    private String to;
+
     private String message;
 
     @Override()
@@ -46,6 +48,14 @@ public class OutboundSMS implements CustomEntity {
 
     public void setVerificationAttempts(Long verificationAttempts) {
         this.verificationAttempts = verificationAttempts;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
     }
 
     public String getMessage() {
